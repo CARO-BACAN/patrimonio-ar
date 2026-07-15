@@ -1,23 +1,25 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>WebAR - O'Higgins Iluminación Enfocada</title>
-    <!-- Referencias a las librerías existentes -->
+    <title>WebAR - O'Higgins Luz Fija</title>
     <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
     <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script>
     
     <script>
-      // Componente para controlar el audio al detectar el marcador
       AFRAME.registerComponent('controlador-audio', {
         init: function () {
           let audio = document.querySelector('#mi-audio');
-          this.el.addEventListener('markerFound', () => { audio.play(); });
-          this.el.addEventListener('markerLost', () => { audio.pause(); audio.currentTime = 0; });
+          this.el.addEventListener('markerFound', () => {
+            audio.play();
+          });
+          this.el.addEventListener('markerLost', () => {
+            audio.pause();
+            audio.currentTime = 0;
+          });
         }
       });
 
-      // Componente para aplicar el mapa de entorno falso (Fake HDRI)
       AFRAME.registerComponent('fake-envmap', {
         init: function () {
           this.el.addEventListener('model-loaded', () => {
@@ -37,7 +39,6 @@
   </head>
 
   <body style="margin: 0px; overflow: hidden;">
-    <!-- Escena AR con renderizado optimizado -->
     <a-scene 
       embedded 
       arjs="sourceType: webcam; debugUIEnabled: false;" 
@@ -49,36 +50,31 @@
         <audio id="mi-audio" src="audio.mp3" preload="auto"></audio>
       </a-assets>
 
-      <!-- ENTIDAD OBJETIVO PARA LA LUZ: Define exactamente adónde debe apuntar el foco -->
-      <a-entity id="targetEntidad" position="0 0.15 0"></a-entity>
-
-      <!-- CONFIGURACIÓN DE ILUMINACIÓN ENFOCADA (FOCO DRAMÁTICO) -->
-      
-      <!-- 1. LUZ AMBIENTAL MUY BAJA: Apenas ilumina las zonas de sombra profunda -->
       <a-light type="ambient" color="#ffffff" intensity="0.05"></a-light>
       
-      <!-- 2. EL FOCO CENTRAL: Crea un cono estrecho de luz cálida desde una dirección específica (Arriba-Delante-Derecha) -->
-      <!-- 'type="spot"' crea un cono de luz. 'target="#targetEntidad"' enfoca la luz en la estatua. -->
-      <!-- 'angle="35"' define un cono estrecho (menos amplia). 'penumbra="0.2"' define un borde de sombra suave pero definido. -->
-      <a-light type="spot" 
-               color="#fff4e6" 
-               position="1 2.5 1.2" 
-               rotation="-45 25 0" 
-               intensity="2.8" 
-               angle="35" 
-               penumbra="0.2" 
-               target="#targetEntidad">
-      </a-light>
-      
       <a-marker preset="hiro" controlador-audio>
+        
+        <a-entity id="targetEntidad" position="0 0.15 0"></a-entity>
+        
+        <a-light type="spot" 
+                 color="#fff4e6" 
+                 position="1 2.5 1.2" 
+                 rotation="-45 25 0" 
+                 intensity="2.8" 
+                 angle="35" 
+                 penumbra="0.2" 
+                 target="#targetEntidad">
+        </a-light>
+
         <a-entity 
           gltf-model="#estatua" 
           scale="0.03 0.03 0.03"  
-          position="0 -0.20 0"
+          position="0 -0.5 0"
           rotation="0 0 0"
           animation-mixer
           fake-envmap>
         </a-entity>
+        
       </a-marker>
       
       <a-entity camera></a-entity>
