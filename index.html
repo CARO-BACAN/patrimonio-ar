@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>WebAR - O'Higgins Profesional</title>
+    <title>WebAR - O'Higgins con Marcador Propio</title>
     <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
     <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script>
@@ -33,10 +33,19 @@
         border-top-color: #ffffff;
         border-radius: 50%;
         animation: girar 1s linear infinite;
-        margin-bottom: 30px;
+        margin-bottom: 20px;
       }
       @keyframes girar {
         to { transform: rotate(360deg); }
+      }
+      /* Estilos para la imagen del patrón en la carga */
+      #imagen-patron {
+        width: 180px;
+        max-width: 50vw;
+        opacity: 0.3; /* Baja opacidad para que no sature visualmente */
+        border-radius: 10px;
+        margin-bottom: 25px;
+        box-shadow: 0px 4px 15px rgba(0,0,0,0.5);
       }
       #pantalla-carga h2 {
         font-size: clamp(1.2rem, 5vw, 1.8rem);
@@ -101,9 +110,11 @@
   <body style="margin: 0px; overflow: hidden;">
     
     <div id="pantalla-carga">
+      <!-- Aquí agregamos tu imagen png con el patrón -->
+      <img id="imagen-patron" src="patron.png" alt="Busca este patrón">
       <div class="spinner"></div>
       <h2>Iniciando Realidad Aumentada</h2>
-      <p>Apunta tu cámara al marcador Hiro para visualizar la estatua interactiva.</p>
+      <p>Apunta tu cámara a esta imagen del castaño para visualizar la estatua interactiva.</p>
     </div>
 
     <a-scene 
@@ -119,7 +130,8 @@
 
       <a-light type="ambient" color="#ffffff" intensity="0.01"></a-light>
       
-      <a-marker preset="hiro" controlador-audio>
+      <!-- AQUÍ ESTÁ EL CAMBIO CLAVE PARA TU MARCADOR PERSONALIZADO -->
+      <a-marker type="pattern" url="patron.patt" controlador-audio>
         
         <a-entity id="targetEntidad" position="0 0.15 0"></a-entity>
         
