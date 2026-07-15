@@ -2,20 +2,15 @@
 <html>
   <head>
     <title>Prueba AR.js en Vivo Y27</title>
-    <!-- Importamos A-Frame y el componente AR.js -->
-    <script src="https://aframe.io"></script>
-    <script src="https://githack.com"></script>
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
   </head>
   <body style="margin: 0px; overflow: hidden;">
-    <!-- Iniciamos la escena de Realidad Aumentada -->
-    <a-scene embedded arjs>
-      <!-- Definimos el marcador estándar "HIRO" -->
+    <a-scene embedded arjs vr-mode-ui="enabled: false">
       <a-marker preset="hiro">
-        <!-- Colocamos una caja roja encima del marcador -->
         <a-box position="0 0.5 0" material="color: red;"></a-box>
       </a-marker>
-      <!-- Activamos la cámara trasera como fondo -->
-      
+      <a-entity camera></a-entity>
     </a-scene>
   </body>
 </html>
