@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>WebAR - O'Higgins </title>
+    <title>WebAR - O'Higgins Iluminado</title>
     <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
     <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script>
     
     <script>
+      // Este script reproduce audio al encontrar el marcador
       AFRAME.registerComponent('controlador-audio', {
         init: function () {
           let audio = document.querySelector('#mi-audio');
@@ -16,6 +17,23 @@
           this.el.addEventListener('markerLost', () => {
             audio.pause();
             audio.currentTime = 0;
+          });
+        }
+      });
+      
+      // HACK: Aplica un mapa de entorno invisible al modelo GLB
+      AFRAME.registerComponent('fake-envmap', {
+        init: function () {
+          this.el.addEventListener('model-loaded', () => {
+            const mesh = this.el.getObject3D('mesh');
+            const texture = new THREE.TextureLoader().load('reflejo.jpg'); // ¡Sube esta imagen!
+            texture.mapping = THREE.EquirectangularReflectionMapping;
+            mesh.traverse((node) => {
+              if (node.isMesh && node.material && 'envMap' in node.material) {
+                node.material.envMap = texture;
+                node.material.needsUpdate = true;
+              }
+            });
           });
         }
       });
@@ -34,17 +52,17 @@
         <audio id="mi-audio" src="audio.mp3" preload="auto"></audio>
       </a-assets>
 
-      <a-light type="ambient" intensity="0.7"></a-light>
-      <a-light type="directional" position="1 1 1" intensity="1.5"></a-light>
-      <a-light type="hemisphere" color="#FFF" groundColor="#000" intensity="1"></a-light>
+      <a-light type="ambient" intensity="1"></a-light>
+      <a-light type="directional" position="1 2 1" intensity="1.5"></a-light>
 
       <a-marker preset="hiro" controlador-audio>
         <a-entity 
           gltf-model="#estatua" 
-          scale="0.03 0.03 0.03" 
+          scale="0.03 0.03 0.03"  
           position="0 0 0"
           rotation="0 0 0"
-          animation-mixer> </a-entity>
+          animation-mixer
+          fake-envmap> </a-entity>
       </a-marker>
 
       <a-entity camera></a-entity>
