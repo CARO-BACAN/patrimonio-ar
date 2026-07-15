@@ -1,27 +1,21 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="utf-8" />
-    <title>WebAR - Juguetes Tradicionales</title>
-    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
-    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
+    <title>Prueba AR.js en Vivo Y27</title>
+    <!-- Importamos A-Frame y el componente AR.js -->
+    <script src="https://aframe.io"></script>
+    <script src="https://githack.com"></script>
   </head>
-  <body style="margin: 0; overflow: hidden;">
-    <a-scene embedded arjs="sourceType: webcam; debugUIEnabled: false;">
-      <a-assets>
-        <a-asset-item id="modelo-3d" src="Emboque_android.glb"></a-asset-item>
-      </a-assets>
-
-      <a-marker type="pattern" url="patron.patt">
-        <a-entity 
-          <a-box position="0 0.5 0" scale="1 1 1" color="red"></a-box> 
-          scale="0.05 0.05 0.05" 
-          position="0 0 0" 
-          rotation="0 0 0">
-        </a-entity>
+  <body style="margin: 0px; overflow: hidden;">
+    <!-- Iniciamos la escena de Realidad Aumentada -->
+    <a-scene embedded arjs>
+      <!-- Definimos el marcador estándar "HIRO" -->
+      <a-marker preset="hiro">
+        <!-- Colocamos una caja roja encima del marcador -->
+        <a-box position="0 0.5 0" material="color: red;"></a-box>
       </a-marker>
-
-      <a-entity camera></a-entity>
+      <!-- Activamos la cámara trasera como fondo -->
+      
     </a-scene>
   </body>
 </html>
