@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>WebAR - O'Higgins con Marcador Propio</title>
+    <title>WebAR - O'Higgins</title>
     <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
     <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script>
@@ -38,15 +38,24 @@
       @keyframes girar {
         to { transform: rotate(360deg); }
       }
-      /* Estilos para la imagen del patrón en la carga */
+      
+      /* Nueva animación de parpadeo suave */
+      @keyframes parpadeo {
+        0% { opacity: 0.15; }
+        50% { opacity: 0.6; }
+        100% { opacity: 0.15; }
+      }
+
+      /* Estilos para la imagen del patrón en la carga con la animación aplicada */
       #imagen-patrón {
         width: 180px;
         max-width: 50vw;
-        opacity: 0.3; /* Baja opacidad para que no sature visualmente */
         border-radius: 10px;
         margin-bottom: 25px;
         box-shadow: 0px 4px 15px rgba(0,0,0,0.5);
+        animation: parpadeo 2.5s ease-in-out infinite; /* Llama a la animación */
       }
+      
       #pantalla-carga h2 {
         font-size: clamp(1.2rem, 5vw, 1.8rem);
         margin: 0 0 10px 0;
@@ -135,11 +144,12 @@
         
         <a-entity id="targetEntidad" position="0 0.15 0"></a-entity>
         
+        <!-- INTENSIDAD DE LUZ REDUCIDA -->
         <a-light type="spot" 
                  color="#fff4e6" 
-                 position="1 5.5 1.2" 
+                 position="1 6.5 3.2" 
                  rotation="-45 25 0" 
-                 intensity="1.5" 
+                 intensity="0.8" 
                  angle="35" 
                  penumbra="0.2" 
                  target="#targetEntidad">
