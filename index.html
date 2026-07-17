@@ -25,7 +25,7 @@
         padding: 5%;
         box-sizing: border-box;
         transition: opacity 0.8s ease;
-        cursor: pointer; /* Añadido para indicar que se puede hacer clic */
+        cursor: pointer;
       }
       .spinner {
         width: 40px;
@@ -69,7 +69,6 @@
         line-height: 1.6;
       }
 
-      /* NUEVO: Botón visual para iniciar */
       .boton-empezar {
         margin-top: 30px;
         padding: 12px 25px;
@@ -82,10 +81,9 @@
         box-shadow: 0px 4px 10px rgba(0,0,0,0.3);
       }
 
-      /* NUEVO: Estilos del contenedor de subtítulos responsivo */
       #contenedor-subtitulos {
         position: fixed;
-        bottom: 5%;
+        bottom: 10%; /* Se aumentó el respiro inferior para la Safe Zone */
         left: 50%;
         transform: translateX(-50%);
         width: 90%;
@@ -105,13 +103,18 @@
         box-shadow: 0px 10px 30px rgba(0,0,0,0.5);
         border: 1px solid rgba(255,255,255,0.1);
       }
+
+      /* Animación suave específica para las letras */
+      #texto-subtitulos {
+        display: block;
+        transition: opacity 0.3s ease-in-out;
+        opacity: 1;
+      }
     </style>
 
     <script>
-      // NUEVO: Variable para registrar la interacción del usuario
       window.interaccionLista = false;
 
-      // NUEVO: Tiempos y textos de los subtítulos
       const datosSubtitulos = [
         { tiempo: 0, texto: "El castaño de Bernardo O'Higgins" },
         { tiempo: 3, texto: "forma parte de la histórica hacienda San José de las Canteras," },
@@ -123,10 +126,10 @@
         { tiempo: 24, texto: "mucho antes de convertirse en una de las figuras más importantes" },
         { tiempo: 29, texto: "de la independencia de Chile." }, 
         { tiempo: 32, texto: "Hoy continúa siendo un símbolo del patrimonio local" }, 
-        { tiempo: 37, texto: "y un vínculo entre la naturaleza y la historia de Quilleco." }
+        { tiempo: 37, texto: "y un vínculo entre la naturaleza y la historia de Quilleco." },
+        { tiempo: 42, texto: "" } 
       ];
 
-      // NUEVO: Función que oculta la carga y destraba el audio
       function iniciarExperiencia() {
         if (window.interaccionLista) return;
         
@@ -142,10 +145,12 @@
         setTimeout(() => { pantalla.style.display = 'none'; }, 800);
       }
 
-      // NUEVO: Sincronización del texto según el tiempo exacto del audio
       document.addEventListener("DOMContentLoaded", () => {
         const audio = document.getElementById('mi-audio');
         const subtitulosDiv = document.getElementById('contenedor-subtitulos');
+        const textoSpan = document.getElementById('texto-subtitulos');
+        
+        let textoActual = "";
 
         audio.addEventListener('timeupdate', () => {
           let tiempoActual = audio.currentTime;
@@ -159,8 +164,20 @@
             }
           }
           
-          if (subtitulosDiv.innerText !== textoAMostrar) {
-            subtitulosDiv.innerText = textoAMostrar;
+          if (textoActual !== textoAMostrar) {
+            textoActual = textoAMostrar;
+            
+            if (textoAMostrar === "") {
+              subtitulosDiv.style.opacity = '0';
+              setTimeout(() => { textoSpan.innerText = ""; }, 400);
+            } else {
+              subtitulosDiv.style.opacity = '1';
+              textoSpan.style.opacity = '0';
+              setTimeout(() => {
+                textoSpan.innerText = textoAMostrar;
+                textoSpan.style.opacity = '1';
+              }, 300); 
+            }
           }
         });
       });
@@ -169,11 +186,14 @@
         init: function () {
           this.audio = document.querySelector('#mi-audio');
           this.subtitulosDiv = document.querySelector('#contenedor-subtitulos');
+          this.textoSpan = document.querySelector('#texto-subtitulos');
           
           this.el.addEventListener('markerFound', () => {
             if (window.interaccionLista) {
               this.audio.play();
-              this.subtitulosDiv.style.opacity = '1';
+              if (this.textoSpan.innerText !== "") {
+                this.subtitulosDiv.style.opacity = '1';
+              }
             }
           });
           
@@ -181,7 +201,7 @@
             this.audio.pause();
             this.audio.currentTime = 0;
             this.subtitulosDiv.style.opacity = '0';
-            this.subtitulosDiv.innerText = "";
+            setTimeout(() => { this.textoSpan.innerText = ""; }, 400);
           });
         }
       });
@@ -206,7 +226,6 @@
 
   <body style="margin: 0px; overflow: hidden;">
     
-    <!-- MODIFICADO: Agregamos onclick para registrar el primer toque -->
     <div id="pantalla-carga" onclick="iniciarExperiencia()">
       <img id="imagen-patrón" src="patron.png" alt="Busca este patrón">
       <div class="spinner"></div>
@@ -215,8 +234,10 @@
       <div class="boton-empezar">Toca aquí para empezar</div>
     </div>
 
-    <!-- NUEVO: Div flotante para los textos -->
-    <div id="contenedor-subtitulos"></div>
+    <!-- Modificación: Se añadió un span interno para animar solo las letras -->
+    <div id="contenedor-subtitulos">
+      <span id="texto-subtitulos"></span>
+    </div>
 
     <a-scene 
       embedded 
