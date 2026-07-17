@@ -83,11 +83,15 @@
 
       #contenedor-subtitulos {
         position: fixed;
-        bottom: 10%; /* Se aumentó el respiro inferior para la Safe Zone */
+        bottom: 10%;
         left: 50%;
         transform: translateX(-50%);
         width: 90%;
         max-width: 700px;
+        min-height: 90px; /* Altura mínima fija para evitar saltos visuales */
+        display: flex; /* Añadimos flexbox para centrar el texto siempre */
+        align-items: center; 
+        justify-content: center;
         background-color: rgba(0, 0, 0, 0.85);
         color: #ffffff;
         font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
@@ -104,11 +108,11 @@
         border: 1px solid rgba(255,255,255,0.1);
       }
 
-      /* Animación suave específica para las letras */
       #texto-subtitulos {
         display: block;
-        transition: opacity 0.2s ease-in-out;
+        transition: opacity 0.3s ease-in-out;
         opacity: 1;
+        width: 100%;
       }
     </style>
 
@@ -234,7 +238,6 @@
       <div class="boton-empezar">Toca aquí para empezar</div>
     </div>
 
-    <!-- Modificación: Se añadió un span interno para animar solo las letras -->
     <div id="contenedor-subtitulos">
       <span id="texto-subtitulos"></span>
     </div>
