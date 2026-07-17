@@ -88,8 +88,8 @@
         transform: translateX(-50%);
         width: 90%;
         max-width: 700px;
-        min-height: 90px; /* Altura mínima fija para evitar saltos visuales */
-        display: flex; /* Añadimos flexbox para centrar el texto siempre */
+        min-height: 90px;
+        display: flex; 
         align-items: center; 
         justify-content: center;
         background-color: rgba(0, 0, 0, 0.85);
@@ -118,6 +118,8 @@
 
     <script>
       window.interaccionLista = false;
+      window.marcadorEncontrado = false; // NUEVO: Control estricto de cámara
+      window.textoActual = ""; // NUEVO: Memoria global del texto
 
       const datosSubtitulos = [
         { tiempo: 0, texto: "El castaño de Bernardo O'Higgins" },
@@ -153,10 +155,11 @@
         const audio = document.getElementById('mi-audio');
         const subtitulosDiv = document.getElementById('contenedor-subtitulos');
         const textoSpan = document.getElementById('texto-subtitulos');
-        
-        let textoActual = "";
 
         audio.addEventListener('timeupdate', () => {
+          // MODIFICACIÓN: Si no estamos viendo el marcador, bloqueamos la aparición de textos
+          if (!window.marcadorEncontrado) return;
+
           let tiempoActual = audio.currentTime;
           let textoAMostrar = "";
           
@@ -168,8 +171,8 @@
             }
           }
           
-          if (textoActual !== textoAMostrar) {
-            textoActual = textoAMostrar;
+          if (window.textoActual !== textoAMostrar) {
+            window.textoActual = textoAMostrar;
             
             if (textoAMostrar === "") {
               subtitulosDiv.style.opacity = '0';
@@ -194,17 +197,19 @@
           
           this.el.addEventListener('markerFound', () => {
             if (window.interaccionLista) {
+              window.marcadorEncontrado = true; // Avisamos que se encontró
               this.audio.play();
-              if (this.textoSpan.innerText !== "") {
-                this.subtitulosDiv.style.opacity = '1';
-              }
+              window.textoActual = ""; // Forzamos a que el sistema redibuje el texto correcto
             }
           });
           
           this.el.addEventListener('markerLost', () => {
+            window.marcadorEncontrado = false; // Avisamos que se perdió
             this.audio.pause();
             this.audio.currentTime = 0;
+            
             this.subtitulosDiv.style.opacity = '0';
+            window.textoActual = ""; // Limpiamos la memoria por completo
             setTimeout(() => { this.textoSpan.innerText = ""; }, 400);
           });
         }
