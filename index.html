@@ -46,7 +46,6 @@
         100% { opacity: 0.15; }
       }
 
-      /* Animación más sutil y elegante para el texto */
       @keyframes pulso-texto {
         0% { opacity: 0.2; }
         50% { opacity: 0.7; }
@@ -76,9 +75,11 @@
         line-height: 1.6;
       }
 
-      /* Texto de inicio más pequeño y profesional */
       .texto-empezar {
-        margin-top: 15px;
+        position: absolute;
+        bottom: 12%;
+        left: 0;
+        width: 100%;
         font-size: 0.75rem;
         color: #aaaaaa;
         text-transform: uppercase;
@@ -89,21 +90,21 @@
 
       #contenedor-subtitulos {
         position: fixed;
-        bottom: 10%;
+        bottom: 12%;
         left: 50%;
         transform: translateX(-50%);
-        width: 90%;
-        max-width: 700px;
-        min-height: 90px;
+        width: 80%;
+        max-width: 450px;
+        min-height: 70px;
         display: flex; 
         align-items: center; 
         justify-content: center;
         background-color: rgba(0, 0, 0, 0.85);
         color: #ffffff;
         font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-        font-size: clamp(1.1rem, 3vw, 1.3rem);
+        font-size: clamp(0.95rem, 3vw, 1.15rem);
         text-align: center;
-        padding: 15px 25px;
+        padding: 10px 15px;
         border-radius: 12px;
         z-index: 999999;
         opacity: 0;
