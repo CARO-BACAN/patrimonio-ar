@@ -46,12 +46,6 @@
         100% { opacity: 0.15; }
       }
 
-      @keyframes pulso-texto {
-        0% { opacity: 0.3; }
-        50% { opacity: 1; }
-        100% { opacity: 0.3; }
-      }
-
       #imagen-patrón {
         width: 180px;
         max-width: 50vw;
@@ -75,13 +69,16 @@
         line-height: 1.6;
       }
 
-      .texto-empezar {
-        margin-top: 35px;
-        font-size: clamp(0.85rem, 3vw, 1rem);
-        color: #e0e0e0;
+      .boton-empezar {
+        margin-top: 30px;
+        padding: 12px 25px;
+        background-color: #ffffff;
+        color: #000000;
+        font-weight: bold;
+        border-radius: 25px;
         text-transform: uppercase;
-        letter-spacing: 2px;
-        animation: pulso-texto 2.5s ease-in-out infinite;
+        letter-spacing: 1px;
+        box-shadow: 0px 4px 10px rgba(0,0,0,0.3);
       }
 
       #contenedor-subtitulos {
@@ -121,8 +118,8 @@
 
     <script>
       window.interaccionLista = false;
-      window.marcadorEncontrado = false;
-      window.textoActual = "";
+      window.marcadorEncontrado = false; // NUEVO: Control estricto de cámara
+      window.textoActual = ""; // NUEVO: Memoria global del texto
 
       const datosSubtitulos = [
         { tiempo: 0, texto: "El castaño de Bernardo O'Higgins" },
@@ -160,6 +157,7 @@
         const textoSpan = document.getElementById('texto-subtitulos');
 
         audio.addEventListener('timeupdate', () => {
+          // MODIFICACIÓN: Si no estamos viendo el marcador, bloqueamos la aparición de textos
           if (!window.marcadorEncontrado) return;
 
           let tiempoActual = audio.currentTime;
@@ -199,19 +197,19 @@
           
           this.el.addEventListener('markerFound', () => {
             if (window.interaccionLista) {
-              window.marcadorEncontrado = true;
+              window.marcadorEncontrado = true; // Avisamos que se encontró
               this.audio.play();
-              window.textoActual = "";
+              window.textoActual = ""; // Forzamos a que el sistema redibuje el texto correcto
             }
           });
           
           this.el.addEventListener('markerLost', () => {
-            window.marcadorEncontrado = false;
+            window.marcadorEncontrado = false; // Avisamos que se perdió
             this.audio.pause();
             this.audio.currentTime = 0;
             
             this.subtitulosDiv.style.opacity = '0';
-            window.textoActual = "";
+            window.textoActual = ""; // Limpiamos la memoria por completo
             setTimeout(() => { this.textoSpan.innerText = ""; }, 400);
           });
         }
@@ -242,7 +240,7 @@
       <div class="spinner"></div>
       <h2>Iniciando Realidad Aumentada</h2>
       <p>Apunta tu cámara a esta imagen para visualizar la estatua interactiva.</p>
-      <div class="texto-empezar">Toca cualquier parte de la pantalla para empezar</div>
+      <div class="boton-empezar">Toca aquí para empezar</div>
     </div>
 
     <div id="contenedor-subtitulos">
