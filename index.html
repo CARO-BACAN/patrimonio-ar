@@ -12,7 +12,8 @@
         top: 0;
         left: 0;
         width: 100vw;
-        height: 100vh;
+        height: 100vh; /* Respaldo para navegadores antiguos */
+        height: 100dvh; /* Altura dinámica para centrado perfecto en celulares */
         background: linear-gradient(135deg, #1a1a1a 0%, #0d0d0d 100%);
         color: #ffffff;
         z-index: 9999999;
@@ -26,18 +27,6 @@
         box-sizing: border-box;
         transition: opacity 0.8s ease;
         cursor: pointer;
-      }
-      .spinner {
-        width: 40px;
-        height: 40px;
-        border: 4px solid rgba(255, 255, 255, 0.1);
-        border-top-color: #ffffff;
-        border-radius: 50%;
-        animation: girar 1s linear infinite;
-        margin-bottom: 20px;
-      }
-      @keyframes girar {
-        to { transform: rotate(360deg); }
       }
       
       @keyframes parpadeo {
@@ -243,7 +232,7 @@
     
     <div id="pantalla-carga" onclick="iniciarExperiencia()">
       <img id="imagen-patrón" src="patron.png" alt="Busca este patrón">
-      <div class="spinner"></div>
+      <!-- El spinner fue removido de aquí para limpiar el diseño -->
       <h2>Iniciando Realidad Aumentada</h2>
       <p>Apunta tu cámara a esta imagen para visualizar la estatua interactiva.</p>
       <div class="texto-empezar">Toca cualquier parte de la pantalla para empezar</div>
