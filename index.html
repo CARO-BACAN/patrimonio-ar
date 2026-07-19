@@ -67,13 +67,16 @@
       .texto-empezar {
         position: absolute;
         bottom: 16%;
-        left: 0;
-        width: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 90%; /* Mantiene el respiro lateral en celulares */
+        max-width: 600px; /* AQUÍ ESTÁ LA MAGIA: Exactamente el mismo ancho máximo que tu párrafo */
         font-size: 0.75rem;
         color: #aaaaaa;
         text-transform: uppercase;
         letter-spacing: 1.5px;
         font-weight: 400;
+        text-align: center; /* Asegura que el texto en sí esté centrado en la caja */
         animation: pulso-texto 3s ease-in-out infinite;
       }
 
